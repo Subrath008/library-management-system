@@ -1,0 +1,48 @@
+<?php
+
+session_start();
+
+include __DIR__ . "/../config/db.php";
+
+if(isset($_POST['login'])){
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? AND role='librarian' AND is_active=1");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if($result->num_rows === 1){
+
+        $user = $result->fetch_assoc();
+
+        if($password == $user['password_hash']){
+
+            $_SESSION['librarian'] = $user['name'];
+            $_SESSION['librarian_id'] = $user['id'];
+            $_SESSION['branch_id'] = $user['branch_id'];
+
+            header("Location: ../views/librarian/dashboard.php");
+            exit();
+
+        } else {
+            header("Location: ../views/librarian/login.php?error=wrong_password");
+            exit();
+        }
+
+    } else {
+        header("Location: ../views/librarian/login.php?error=user_not_found");
+        exit();
+    }
+}
+
+if(isset($_GET['logout'])){
+    session_destroy();
+    header("Location: ../views/librarian/login.php");
+    exit();
+}
+
+?>
