@@ -6,6 +6,7 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
+
 include "../../config/db.php";
 
 if(isset($_GET['pay_id'])){
@@ -28,7 +29,18 @@ $result = $conn->query(
     "SELECT * FROM fines ORDER BY id DESC"
 );
 ?>
-
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
 <h2>Manage Fines</h2>
 
 <table border="1" cellpadding="10">
@@ -80,4 +92,3 @@ $result = $conn->query(
 </table>
 
 <br>
-<a href="dashboard.php">Back to Dashboard</a>

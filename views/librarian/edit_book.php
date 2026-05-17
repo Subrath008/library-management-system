@@ -5,7 +5,18 @@ if(!isset($_SESSION['librarian'])){
     header("Location: login.php");
     exit();
 }
-
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
 include "../../config/db.php";
 include "../../models/Book.php";
 
@@ -35,13 +46,13 @@ if(isset($_GET['error'])){
     <input type="text" name="isbn" value="<?php echo $book['isbn']; ?>">
     <br><br>
 
-    <input type="number" name="genre_id" value="<?php echo $book['genre_id']; ?>">
+    <input type="number" name="genre_id" value="<?php echo $book['genre_id']; ?>" min="1">
     <br><br>
 
     <input type="text" name="publisher" value="<?php echo $book['publisher']; ?>">
     <br><br>
 
-    <input type="number" name="published_year" value="<?php echo $book['published_year']; ?>">
+   <input type="number" name="published_year" value="<?php echo $book['published_year']; ?>" min="1000" max="2026">
     <br><br>
 
     <textarea name="description"><?php echo $book['description']; ?></textarea>

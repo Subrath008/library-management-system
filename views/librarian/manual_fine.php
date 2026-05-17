@@ -18,6 +18,10 @@ if(isset($_POST['issue_fine'])){
     $amount = $_POST['amount'];
     $reason = $_POST['reason'];
 
+    if($amount < 0){
+    $message = "Fine amount cannot be negative";
+} else {
+
     $stmt = $conn->prepare(
         "INSERT INTO fines 
         (borrow_record_id, member_id, branch_id, amount, reason, is_paid)
@@ -39,7 +43,20 @@ if(isset($_POST['issue_fine'])){
         $message = "Failed to issue fine";
     }
 }
+}
 ?>
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
 
 <h2>Issue Manual Fine</h2>
 
@@ -47,16 +64,13 @@ if(isset($_POST['issue_fine'])){
 
 <form method="POST">
 
-    <input type="number" name="borrow_record_id" placeholder="Borrow Record ID" required>
-    <br><br>
-
-    <input type="number" name="member_id" placeholder="Member ID" required>
-    <br><br>
-
-    <input type="number" name="branch_id" placeholder="Branch ID" value="1" required>
-    <br><br>
-
-    <input type="number" step="0.01" name="amount" placeholder="Fine Amount" required>
+    <input type="number" name="borrow_record_id" placeholder="Borrow Record ID" min="1" required>
+      <br><br>
+    <input type="number" name="member_id" placeholder="Member ID" min="1" required>
+      <br><br>
+     <input type="number" name="branch_id" placeholder="Branch ID" value="1" min="1" required>
+  <br><br>
+   <input type="number" step="0.01" name="amount" placeholder="Fine Amount" min="0" required>
     <br><br>
 
     <select name="reason" required>
@@ -74,4 +88,4 @@ if(isset($_POST['issue_fine'])){
 <br>
 <a href="manage_fines.php">View Fines</a>
 <br><br>
-<a href="dashboard.php">Back to Dashboard</a>
+

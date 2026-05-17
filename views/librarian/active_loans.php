@@ -71,6 +71,20 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
+
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
+
 <h2>Active Loans</h2>
 <a href="active_loans.php">All</a> |
 <a href="active_loans.php?filter=overdue">Overdue</a> |
@@ -114,4 +128,3 @@ $result = $stmt->get_result();
 </table>
 
 <br>
-<a href="dashboard.php">Back to Dashboard</a>

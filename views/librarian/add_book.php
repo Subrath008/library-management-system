@@ -6,6 +6,18 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 ?>
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
 
 <h2>Add New Book</h2>
 
@@ -26,13 +38,13 @@ if(isset($_GET['error'])){
     <input type="text" name="isbn" placeholder="ISBN">
     <br><br>
 
-    <input type="number" name="genre_id" placeholder="Genre ID">
+    <input type="number" name="genre_id" placeholder="Genre ID" min="1">
     <br><br>
 
     <input type="text" name="publisher" placeholder="Publisher">
     <br><br>
 
-    <input type="number" name="published_year" placeholder="Published Year">
+    <input type="number" name="published_year" placeholder="Published Year" min="1000" max="2026">
     <br><br>
 
     <textarea name="description" placeholder="Book Description"></textarea>
@@ -47,4 +59,3 @@ if(isset($_GET['error'])){
 </form>
 
 <br>
-<a href="dashboard.php">Back to Dashboard</a>

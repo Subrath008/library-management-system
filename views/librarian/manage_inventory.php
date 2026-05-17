@@ -6,6 +6,7 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
+
 include "../../config/db.php";
 
 $message = "";
@@ -17,20 +18,37 @@ if(isset($_POST['save_inventory'])){
     $total_copies = $_POST['total_copies'];
     $available_copies = $_POST['available_copies'];
 
-    $stmt = $conn->prepare(
-        "INSERT INTO branch_inventory (book_id, branch_id, total_copies, available_copies)
-         VALUES (?, ?, ?, ?)"
-    );
+    if($total_copies < 0 || $available_copies < 0){
 
-    $stmt->bind_param("iiii", $book_id, $branch_id, $total_copies, $available_copies);
+        $message = "Copies cannot be negative";
 
-    if($stmt->execute()){
-        $message = "Inventory added successfully";
+    } elseif($available_copies > $total_copies){
+
+        $message = "Available copies cannot be more than total copies";
+
     } else {
-        $message = "Failed to add inventory";
+
+        $stmt = $conn->prepare(
+            "INSERT INTO branch_inventory 
+            (book_id, branch_id, total_copies, available_copies)
+            VALUES (?, ?, ?, ?)"
+        );
+
+        $stmt->bind_param(
+            "iiii",
+            $book_id,
+            $branch_id,
+            $total_copies,
+            $available_copies
+        );
+
+        if($stmt->execute()){
+            $message = "Inventory added successfully";
+        } else {
+            $message = "Failed to add inventory";
+        }
     }
 }
-
 $books = $conn->query("SELECT id, title FROM books ORDER BY title ASC");
 
 $inventory = $conn->query(
@@ -45,6 +63,18 @@ $inventory = $conn->query(
 <html>
 <head>
     <title>Manage Inventory</title>
+    <link rel="stylesheet" href="../../assets/css/librarian.css">
+    <div style="margin-bottom:20px;">
+    <a href="dashboard.php"
+       style="
+       background:#0b5ed7;
+       color:white;
+       padding:10px 15px;
+       border-radius:5px;
+       text-decoration:none;">
+       ← Back to Dashboard
+    </a>
+</div>
 </head>
 <body>
 
@@ -65,18 +95,16 @@ $inventory = $conn->query(
     </select>
     <br><br>
 
-    <input type="number" name="branch_id" placeholder="Branch ID" required>
+  <input type="number" name="branch_id" placeholder="Branch ID" min="1" required>
     <br><br>
 
-    <input type="number" name="total_copies" placeholder="Total Copies" required>
+    <input type="number" name="total_copies" placeholder="Total Copies" min="0" required>
     <br><br>
-
-    <input type="number" name="available_copies" placeholder="Available Copies" required>
-    <br><br>
-
+    <input type="number" name="available_copies" placeholder="Available Copies" min="0" required>
+   <br><br>
     <button type="submit" name="save_inventory">Save Inventory</button>
 
-</form>
+</form>  
 
 <br>
 
@@ -101,7 +129,7 @@ $inventory = $conn->query(
 </table>
 
 <br>
-<a href="dashboard.php">Back to Dashboard</a>
+
 
 </body>
 </html>

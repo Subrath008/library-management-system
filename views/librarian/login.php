@@ -12,7 +12,7 @@ if(isset($_GET['error'])){
     echo "<p style='color:red;'>Invalid login information</p>";
 }
 ?>
-
+<link rel="stylesheet" href="../../assets/css/librarian.css">
 <form method="POST" action="../../controllers/AuthController.php">
 
     <input type="email" name="email" placeholder="Email" required>
