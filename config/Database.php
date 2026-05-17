@@ -6,7 +6,7 @@ class Database {
     private $username = "root";
     private $password = "";
     
-    private $db_name = "library_management"; 
+    private $db_name = "library_management_system"; 
     
     public $conn;
 
