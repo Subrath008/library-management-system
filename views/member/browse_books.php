@@ -17,6 +17,22 @@ $branches = getAllBranches($conn);
 <!DOCTYPE html>
 <html>
 <head>
+<div class="topbar">
+
+    <div class="topbar-left">
+        <a href="dashboard.php" class="top-btn dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="topbar-right">
+        <a href="logout.php" class="top-btn logout-top-btn">
+            Logout
+        </a>
+    </div>
+
+</div>
+
     <title>Browse Books</title>
     
 <link rel="stylesheet" href="../../assets/css/member.css">
@@ -25,9 +41,7 @@ $branches = getAllBranches($conn);
 <body>
 
 <h2>Browse Books</h2>
-<a href="dashboard.php" class="back-btn">
-    Back to Dashboard
-</a>
+
 
 <br><br>
 

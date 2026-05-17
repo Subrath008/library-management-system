@@ -94,7 +94,7 @@ $announcements = getAnnouncementsForMember(
         <a href="browse_books.php">Browse Books</a>
 
         <a href="active_loans.php">Active Loans</a>
-
+    
         <a href="borrow_history.php">Borrow History</a>
 
         <a href="reading_list.php">Reading List</a>
@@ -108,35 +108,6 @@ $announcements = getAnnouncementsForMember(
         
 
          
-        
-      <?php
-$notification_sql = "SELECT COUNT(*) AS total
-                     FROM notifications
-                     WHERE member_id = ?
-                     AND is_read = 0";
-
-$notification_stmt = mysqli_prepare($conn, $notification_sql);
-
-mysqli_stmt_bind_param(
-    $notification_stmt,
-    "i",
-    $_SESSION['member_id']
-);
-
-mysqli_stmt_execute($notification_stmt);
-
-$notification_result = mysqli_stmt_get_result($notification_stmt);
-
-$notification_count = mysqli_fetch_assoc($notification_result);
-?>
-
-<a href="notifications.php">
-    Notifications
-    <?php if ($notification_count['total'] > 0) { ?>
-        (<?php echo $notification_count['total']; ?>)
-    <?php } ?>
-
-</a>
 
 <a href="logout.php" class="logout-btn">
         Logout
@@ -181,9 +152,7 @@ $notification_count = mysqli_fetch_assoc($notification_result);
                     <?php echo $announcement['published_at']; ?>
                 </small>
                 <br><br>
-             <a href="respond_announcement.php?id=<?php echo $announcement['id']; ?>">
-             Respond
-             </a>
+            
 
 
             </div>

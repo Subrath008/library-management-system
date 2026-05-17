@@ -441,57 +441,35 @@ function getMemberReservations($conn, $member_id) {
     return mysqli_stmt_get_result($stmt);
 }
 
-function hasPendingRenewalRequest($conn, $borrow_record_id, $member_id) {
-    $sql = "SELECT id FROM renewal_requests
-            WHERE borrow_record_id = ?
-            AND member_id = ?
-            AND status = 'pending'";
+function renewLoan($conn, $borrow_record_id) {
+
+    $sql = "UPDATE borrow_records
+            SET renewals_count = renewals_count + 1,
+                due_date = DATE_ADD(due_date, INTERVAL 7 DAY)
+            WHERE id = ?
+            AND renewals_count < 2";
 
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ii", $borrow_record_id, $member_id);
-    mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
-
-    return mysqli_num_rows($result) > 0;
-}
-
-function submitRenewalRequest($conn, $borrow_record_id, $member_id) {
-    $sql = "INSERT INTO renewal_requests
-            (borrow_record_id, member_id, status)
-            VALUES (?, ?, 'pending')";
-
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ii", $borrow_record_id, $member_id);
+    mysqli_stmt_bind_param($stmt, "i", $borrow_record_id);
 
     return mysqli_stmt_execute($stmt);
 }
 
-function hasPendingFinePaymentRequest($conn, $fine_id, $member_id) {
-    $sql = "SELECT id FROM fine_payment_requests
-            WHERE fine_id = ?
-            AND member_id = ?
-            AND status = 'pending'";
+function payFine($conn, $fine_id) {
+
+    $sql = "UPDATE fines
+            SET is_paid = 1,
+                paid_at = NOW()
+            WHERE id = ?";
 
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ii", $fine_id, $member_id);
-    mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
-
-    return mysqli_num_rows($result) > 0;
-}
-
-function submitFinePaymentRequest($conn, $fine_id, $member_id) {
-    $sql = "INSERT INTO fine_payment_requests
-            (fine_id, member_id, status)
-            VALUES (?, ?, 'pending')";
-
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ii", $fine_id, $member_id);
+    mysqli_stmt_bind_param($stmt, "i", $fine_id);
 
     return mysqli_stmt_execute($stmt);
 }
+
 
 function submitAnnouncementResponse($conn, $announcement_id, $member_id, $response_text) {
     $sql = "INSERT INTO announcement_responses 
@@ -503,5 +481,7 @@ function submitAnnouncementResponse($conn, $announcement_id, $member_id, $respon
 
     return mysqli_stmt_execute($stmt);
 }
+
+
 
 ?>

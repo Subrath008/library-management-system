@@ -1,16 +1,19 @@
 <?php
 session_start();
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 include_once("../../controllers/MemberController.php");
 
 requireMemberLogin();
 
-$member_id = $_SESSION['member_id'];
 $borrow_record_id = $_GET['id'] ?? 0;
 
-if (!hasPendingRenewalRequest($conn, $borrow_record_id, $member_id)) {
-    submitRenewalRequest($conn, $borrow_record_id, $member_id);
-}
+renewLoan($conn, $borrow_record_id);
 
 header("Location: active_loans.php");
 exit();
 ?>
+

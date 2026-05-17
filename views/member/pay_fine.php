@@ -1,16 +1,18 @@
 <?php
 session_start();
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 include_once("../../controllers/MemberController.php");
 
 requireMemberLogin();
 
-$member_id = $_SESSION['member_id'];
 $fine_id = $_GET['id'] ?? 0;
 
-if (!hasPendingFinePaymentRequest($conn, $fine_id, $member_id)) {
-    submitFinePaymentRequest($conn, $fine_id, $member_id);
-}
+payFine($conn, $fine_id);
 
-header("Location: fines.php?payment=requested");
+header("Location: fines.php");
 exit();
 ?>

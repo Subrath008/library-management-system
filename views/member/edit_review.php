@@ -37,6 +37,24 @@ if (isset($_POST['delete_review'])) {
 <!DOCTYPE html>
 <html>
 <head>
+<div class="topbar">
+
+    <div class="topbar-left">
+        <a href="dashboard.php" class="top-btn dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="topbar-right">
+        <a href="logout.php" class="top-btn logout-top-btn">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+
+
     <title>Edit Review</title>
     
     <link rel="stylesheet" href="../../assets/css/member.css">

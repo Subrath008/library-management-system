@@ -16,18 +16,34 @@ $loans = getActiveLoans($conn, $_SESSION['member_id']);
 <!DOCTYPE html>
 <html>
 <head>
+<div class="topbar">
+
+    <div class="topbar-left">
+        <a href="dashboard.php" class="top-btn dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="topbar-right">
+        <a href="logout.php" class="top-btn logout-top-btn">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+
+   
     <title>Active Loans</title>
     
    <link rel="stylesheet" href="../../assets/css/member.css">
 
 </head>
 <body>
+<a href="browse_books.php">Back to Browse Books</a>
+
 
 <h2>My Active Loans</h2>
-
-<a href="dashboard.php" class="back-btn">
-    Back to Dashboard
-</a>
 
 
 <br><br>

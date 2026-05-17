@@ -30,6 +30,24 @@ $reservations = mysqli_stmt_get_result($stmt);
 <!DOCTYPE html>
 <html>
 <head>
+<div class="topbar">
+
+    <div class="topbar-left">
+        <a href="dashboard.php" class="top-btn dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="topbar-right">
+        <a href="logout.php" class="top-btn logout-top-btn">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+
+
     <title>My Reservations</title>
     
     <link rel="stylesheet" href="../../assets/css/member.css">
@@ -38,10 +56,6 @@ $reservations = mysqli_stmt_get_result($stmt);
 <body>
 
 <h2>My Reservations</h2>
-
-<a href="dashboard.php" class="back-btn">
-    Back to Dashboard
-</a>
 
 
 <br><br>
