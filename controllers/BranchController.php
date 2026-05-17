@@ -19,21 +19,30 @@ class BranchController {
     }
 
     public function edit() {
-        $branch_id = $_GET['id'] ?? null;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'];
-            $address = $_POST['address'];
-            $city = $_POST['city'];
-            $phone = $_POST['phone'];
-            $is_active = isset($_POST['is_active']) ? 1 : 0;
+    $branchModel = new Branch(); 
+    $manager_id = $_SESSION['user_id'];
 
-            $this->branchModel->updateBranch($branch_id, $name, $address, $city, $phone, $is_active);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST['name'] ?? '';
+        $address = $_POST['address'] ?? '';
+        $city = $_POST['city'] ?? '';
+        $phone = $_POST['phone'] ?? '';
+        $is_active = isset($_POST['is_active']) ? 1 : 0; 
+
+        if (isset($_GET['id'])) {
             header("Location: index.php?controller=branch&action=index&msg=updated");
-            exit();
         } else {
-            $branch = $this->branchModel->getBranchById($branch_id);
-            require __DIR__ . '/../views/branches/create_edit.php';
+            $branchModel->addBranch($name, $address, $city, $phone, $manager_id, $is_active);
+            header("Location: index.php?controller=branch&action=index&msg=created");
         }
+        exit; 
+    }
+
+    if (isset($_GET['id'])) {
+        $branch = $branchModel->getBranchById($_GET['id']); 
+    }
+
+         require __DIR__ . '/../views/branches/create_edit.php';
     }
 
     public function assignLibrarian() {
@@ -51,6 +60,15 @@ class BranchController {
             $branches = $this->branchModel->getBranchesByManager($_SESSION['user_id']);
             require __DIR__ . '/../views/branches/assign_librarian.php';
         }
+    }
+
+    public function delete() {
+        if (isset($_GET['id'])) {
+            $branchModel = new Branch();
+            $branchModel->deleteBranch($_GET['id']);
+    }
+            header("Location: index.php?controller=branch&action=index&msg=deleted");
+         exit;
     }
 }
 ?>

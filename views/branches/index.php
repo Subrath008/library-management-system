@@ -44,6 +44,16 @@
                             <td>
                                 <a href="index.php?controller=branch&action=edit&id=<?php echo $branch['id']; ?>" class="btn-secondary btn-sm">Edit Details</a>
                             </td>
+                            <td>
+                                <a href="index.php?controller=branch&action=edit&id=<?php echo $branch['id']; ?>" class="btn btn-secondary btn-sm">Edit Details</a>
+    
+                                <a href="index.php?controller=branch&action=delete&id=<?php echo $branch['id']; ?>" 
+                                 class="btn btn-danger btn-sm" 
+                                 style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-left: 5px;"
+                                 onclick="return confirm('Are you sure you want to permanently delete this branch?');">
+                                 Delete
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

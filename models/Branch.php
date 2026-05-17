@@ -39,5 +39,20 @@ class Branch {
         $stmt->bind_param("ssssii", $name, $address, $city, $phone, $is_active, $id);
         return $stmt->execute();
     }
+
+    public function addBranch($name, $address, $city, $phone, $manager_id, $is_active) {
+        $query = "INSERT INTO branches (name, address, city, phone, manager_id, is_active) 
+              VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ssssii", $name, $address, $city, $phone, $manager_id, $is_active);
+        return $stmt->execute();
+    }
+
+    public function deleteBranch($id) {
+        $query = "DELETE FROM branches WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
 }
 ?>
