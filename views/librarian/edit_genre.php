@@ -5,8 +5,7 @@ if(!isset($_SESSION['librarian'])){
     header("Location: login.php");
     exit();
 }
-<link rel="stylesheet" href="../../assets/css/librarian.css">
-<?php include "navbar.php"; ?>
+
 
 include "../../config/db.php";
 include "../../models/Genre.php";
@@ -14,7 +13,8 @@ include "../../models/Genre.php";
 $genreModel = new Genre($conn);
 $genre = $genreModel->getGenreById($_GET['id']);
 ?>
-
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<?php include "navbar.php"; ?>
 <h2>Edit Genre</h2>
 
 <?php

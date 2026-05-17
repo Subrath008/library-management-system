@@ -35,7 +35,7 @@ $result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
 ?>
 <link rel="stylesheet" href="../../assets/css/librarian.css">
 <?php include "navbar.php"; ?>
-<
+
 
 <h2>Post Announcement</h2>
 

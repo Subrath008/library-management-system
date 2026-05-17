@@ -5,8 +5,7 @@ if(!isset($_SESSION['librarian'])){
     header("Location: login.php");
     exit();
 }
-<link rel="stylesheet" href="../../assets/css/librarian.css">
-<?php include "navbar.php"; ?>
+
 
 include "../../config/db.php";
 include "../../models/Book.php";
@@ -14,7 +13,8 @@ include "../../models/Book.php";
 $bookModel = new Book($conn);
 $book = $bookModel->getBookById($_GET['id']);
 ?>
-
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+<?php include "navbar.php"; ?>
 <h2>Edit Book</h2>
 
 <?php
@@ -22,7 +22,7 @@ if(isset($_GET['error'])){
     echo "<p style='color:red;'>Failed to update book</p>";
 }
 ?>
-
+<a href="view_books.php">Back to Books</a>
 <form method="POST" action="../../controllers/BookController.php" enctype="multipart/form-data">
 
     <input type="hidden" name="id" value="<?php echo $book['id']; ?>">
