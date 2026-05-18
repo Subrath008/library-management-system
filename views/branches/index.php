@@ -45,7 +45,6 @@
                                 <a href="index.php?controller=branch&action=edit&id=<?php echo $branch['id']; ?>" class="btn-secondary btn-sm">Edit Details</a>
                             </td>
                             <td>
-                                <a href="index.php?controller=branch&action=edit&id=<?php echo $branch['id']; ?>" class="btn btn-secondary btn-sm">Edit Details</a>
     
                                 <a href="index.php?controller=branch&action=delete&id=<?php echo $branch['id']; ?>" 
                                  class="btn btn-danger btn-sm" 
