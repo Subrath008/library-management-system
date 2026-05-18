@@ -1,19 +1,16 @@
 <?php
 
 session_start();
+include __DIR__ . "/../models/Auth.php";
 
-include __DIR__ . "/../config/db.php";
+$authModel = new Auth($conn);
 
 if(isset($_POST['login'])){
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? AND role='librarian' AND is_active=1");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
+   $result = $authModel->loginLibrarian($email);
 
     if($result->num_rows === 1){
 
