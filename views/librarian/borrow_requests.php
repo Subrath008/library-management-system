@@ -6,59 +6,11 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-include "../../config/db.php";
-
-if(isset($_GET['approve'])){
-    $id = $_GET['approve'];
-
-    $borrow_date = date("Y-m-d");
-    $due_date = date("Y-m-d", strtotime("+14 days"));
-
-    $stmt = $conn->prepare(
-        "UPDATE borrow_records 
-         SET status='active', borrow_date=?, due_date=? 
-         WHERE id=?"
-    );
-    $stmt->bind_param("ssi", $borrow_date, $due_date, $id);
-    $stmt->execute();
-
-    header("Location: borrow_requests.php");
-    exit();
-}
-
-if(isset($_GET['reject'])){
-    $id = $_GET['reject'];
-
-    $stmt = $conn->prepare(
-        "UPDATE borrow_records 
-         SET status='rejected' 
-         WHERE id=?"
-    );
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-
-    header("Location: borrow_requests.php");
-    exit();
-}
-
-/*$result = $conn->query(
-    "SELECT borrow_records.*, books.title 
-     FROM borrow_records
-     JOIN books ON borrow_records.book_id = books.id
-     WHERE borrow_records.status='pending'
-     ORDER BY borrow_records.id DESC"
-);*/
-
-$result = $conn->query(
-    "SELECT borrow_records.*, books.title 
-     FROM borrow_records
-     LEFT JOIN books ON borrow_records.book_id = books.id
-     WHERE borrow_records.status='pending'
-     ORDER BY borrow_records.id DESC"
-);
+include "../../controllers/BorrowController.php";
 ?>
 
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
 
 <h2>Pending Borrow Requests</h2>

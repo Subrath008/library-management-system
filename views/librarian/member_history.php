@@ -5,38 +5,14 @@ if(!isset($_SESSION['librarian'])){
     header("Location: login.php");
     exit();
 }
+
+include "../../controllers/MemberHistoryController.php";
+?>
+
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
 
-include "../../config/db.php";
-
-$member_id = $_GET['id'];
-
-$stmt = $conn->prepare("SELECT id, name, email, phone, branch_id FROM users WHERE id=? AND role='member'");
-$stmt->bind_param("i", $member_id);
-$stmt->execute();
-$member = $stmt->get_result()->fetch_assoc();
-
-$loans = $conn->prepare(
-    "SELECT borrow_records.*, books.title
-     FROM borrow_records
-     LEFT JOIN books ON borrow_records.book_id = books.id
-     WHERE borrow_records.member_id=?
-     ORDER BY borrow_records.id DESC"
-);
-$loans->bind_param("i", $member_id);
-$loans->execute();
-$loan_result = $loans->get_result();
-
-$fines = $conn->prepare(
-    "SELECT * FROM fines
-     WHERE member_id=?
-     ORDER BY id DESC"
-);
-$fines->bind_param("i", $member_id);
-$fines->execute();
-$fine_result = $fines->get_result();
-?>
 
 <h2>Member Full History</h2>
 

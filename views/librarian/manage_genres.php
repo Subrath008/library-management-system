@@ -19,6 +19,14 @@ $result = $genreModel->getAllGenres();
 <h2>Manage Genres</h2>
 
 <?php
+if(isset($_GET['error']) && $_GET['error']=="exists"){
+    echo "<p style='color:red;'>
+            Genre already exists
+          </p>";
+}
+?>
+
+<?php
 if(isset($_GET['msg'])){
     echo "<p style='color:green;'>Action completed successfully</p>";
 }

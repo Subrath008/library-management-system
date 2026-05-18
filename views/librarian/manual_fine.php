@@ -6,47 +6,15 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-include "../../config/db.php";
-
-$message = "";
-
-if(isset($_POST['issue_fine'])){
-
-    $borrow_record_id = $_POST['borrow_record_id'];
-    $member_id = $_POST['member_id'];
-    $branch_id = $_POST['branch_id'];
-    $amount = $_POST['amount'];
-    $reason = $_POST['reason'];
-
-    if($amount < 0){
-    $message = "Fine amount cannot be negative";
-} else {
-
-    $stmt = $conn->prepare(
-        "INSERT INTO fines 
-        (borrow_record_id, member_id, branch_id, amount, reason, is_paid)
-        VALUES (?, ?, ?, ?, ?, 0)"
-    );
-
-    $stmt->bind_param(
-        "iiids",
-        $borrow_record_id,
-        $member_id,
-        $branch_id,
-        $amount,
-        $reason
-    );
-
-    if($stmt->execute()){
-        $message = "Manual fine issued successfully";
-    } else {
-        $message = "Failed to issue fine";
-    }
-}
-}
+include "../../controllers/ManualFineController.php";
 ?>
+
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
+
+
+
 
 
 <h2>Issue Manual Fine</h2>
@@ -72,7 +40,7 @@ if(isset($_POST['issue_fine'])){
     </select>
     <br><br>
 
-    <button type="submit" name="issue_fine">Issue Fine</button>
+    <button type="submit" name="save_fine">Issue Fine</button>
 
 </form>
 

@@ -6,58 +6,11 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-
-include "../../config/db.php";
-
-$message = "";
-
-if(isset($_POST['save_inventory'])){
-
-    $book_id = $_POST['book_id'];
-    $branch_id = $_POST['branch_id'];
-    $total_copies = $_POST['total_copies'];
-    $available_copies = $_POST['available_copies'];
-
-    if($total_copies < 0 || $available_copies < 0){
-
-        $message = "Copies cannot be negative";
-
-    } elseif($available_copies > $total_copies){
-
-        $message = "Available copies cannot be more than total copies";
-
-    } else {
-
-        $stmt = $conn->prepare(
-            "INSERT INTO branch_inventory 
-            (book_id, branch_id, total_copies, available_copies)
-            VALUES (?, ?, ?, ?)"
-        );
-
-        $stmt->bind_param(
-            "iiii",
-            $book_id,
-            $branch_id,
-            $total_copies,
-            $available_copies
-        );
-
-        if($stmt->execute()){
-            $message = "Inventory added successfully";
-        } else {
-            $message = "Failed to add inventory";
-        }
-    }
-}
-$books = $conn->query("SELECT id, title FROM books ORDER BY title ASC");
-
-$inventory = $conn->query(
-    "SELECT branch_inventory.*, books.title 
-     FROM branch_inventory
-     JOIN books ON branch_inventory.book_id = books.id
-     ORDER BY branch_inventory.id DESC"
-);
+include "../../controllers/InventoryController.php";
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -77,13 +30,14 @@ $inventory = $conn->query(
 
     <label>Select Book:</label>
     <select name="book_id" required>
-        <option value="">Select Book</option>
-        <?php while($book = $books->fetch_assoc()){ ?>
-            <option value="<?php echo $book['id']; ?>">
-                <?php echo $book['title']; ?>
-            </option>
-        <?php } ?>
-    </select>
+    <option value="">Select Book</option>
+
+    <?php while($book = $booksResult->fetch_assoc()){ ?>
+        <option value="<?php echo $book['id']; ?>">
+            <?php echo $book['title']; ?>
+        </option>
+    <?php } ?>
+</select>
     <br><br>
 
   <input type="number" name="branch_id" placeholder="Branch ID" min="1" required>
@@ -108,7 +62,7 @@ $inventory = $conn->query(
         <th>Available Copies</th>
     </tr>
 
-    <?php while($row = $inventory->fetch_assoc()){ ?>
+    <?php while($row = $result->fetch_assoc()){ ?>
         <tr>
             <td><?php echo $row['id']; ?></td>
             <td><?php echo $row['title']; ?></td>

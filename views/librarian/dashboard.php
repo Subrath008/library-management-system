@@ -70,7 +70,7 @@ padding:20px;
 
         <a href="ajax_book_search.php" class="dash-card"> Book Search</a>
 
-        <a href="search_members.php" class="dash-card">Search Members</a>
+      <a href="ajax_member_search.php" class="dash-card"> Member Search</a>
 
         <a href="catalog_statistics.php" class="dash-card">Catalog Statistics</a>
 

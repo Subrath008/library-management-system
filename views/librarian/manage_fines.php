@@ -6,31 +6,14 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-
-include "../../config/db.php";
-
-if(isset($_GET['pay_id'])){
-    $id = $_GET['pay_id'];
-    $paid_at = date("Y-m-d H:i:s");
-
-    $stmt = $conn->prepare(
-        "UPDATE fines 
-         SET is_paid=1, paid_at=? 
-         WHERE id=?"
-    );
-    $stmt->bind_param("si", $paid_at, $id);
-    $stmt->execute();
-
-    header("Location: manage_fines.php");
-    exit();
-}
-
-$result = $conn->query(
-    "SELECT * FROM fines ORDER BY id DESC"
-);
+include "../../controllers/FineController.php";
 ?>
+
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
+
+
 
 <h2>Manage Fines</h2>
 

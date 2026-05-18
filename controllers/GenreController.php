@@ -12,15 +12,27 @@ include __DIR__ . "/../models/Genre.php";
 
 $genreModel = new Genre($conn);
 
+if($genreModel->genreExists($name)){
+
+    header(
+        "Location: ../views/librarian/manage_genres.php?error=exists"
+    );
+
+    exit();
+}
+
 if(isset($_POST['add_genre'])){
 
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);
+
+    if($genreModel->genreExists($name)){
+
+        header("Location: ../views/librarian/manage_genres.php?error=exists");
+        exit();
+    }
 
     if($genreModel->addGenre($name)){
         header("Location: ../views/librarian/manage_genres.php?msg=added");
-        exit();
-    } else {
-        header("Location: ../views/librarian/manage_genres.php?error=add_failed");
         exit();
     }
 }

@@ -5,12 +5,16 @@ if(!isset($_SESSION['librarian'])){
     header("Location: login.php");
     exit();
 }
+
+include "../../controllers/SearchBookController.php";
 ?>
+
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
 
 
-<h2>AJAX Live Book Search</h2>
+<h2> Live Book Search</h2>
 
 <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN">
 

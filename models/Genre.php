@@ -45,6 +45,20 @@ class Genre {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function genreExists($name){
+
+    $name = trim($name);
+
+    $stmt = $this->conn->prepare(
+        "SELECT id FROM genres WHERE LOWER(name)=LOWER(?)"
+    );
+
+    $stmt->bind_param("s", $name);
+    $stmt->execute();
+
+    return $stmt->get_result()->num_rows > 0;
+}
 }
 
 ?>

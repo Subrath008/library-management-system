@@ -6,29 +6,11 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-include "../../config/db.php";
-
-$keyword = "";
-$members = null;
-
-if(isset($_GET['search'])){
-    $keyword = $_GET['keyword'];
-    $like = "%" . $keyword . "%";
-
-    $stmt = $conn->prepare(
-        "SELECT id, name, email, phone, role, branch_id
-         FROM users
-         WHERE role='member'
-         AND (name LIKE ? OR email LIKE ? OR phone LIKE ?)"
-    );
-
-    $stmt->bind_param("sss", $like, $like, $like);
-    $stmt->execute();
-    $members = $stmt->get_result();
-}
+include "../../controllers/MemberController.php";
 ?>
 
 <link rel="stylesheet" href="../../assets/css/librarian.css">
+
 <?php include "navbar.php"; ?>
 
 <h2>Search Member Records</h2>
@@ -40,7 +22,7 @@ if(isset($_GET['search'])){
 
 <br>
 
-<?php if($members){ ?>
+<?php if($result){ ?>
 <table border="1" cellpadding="10">
     <tr>
         <th>ID</th>
@@ -51,7 +33,7 @@ if(isset($_GET['search'])){
         <th>Action</th>
     </tr>
 
-    <?php while($member = $members->fetch_assoc()){ ?>
+  <?php while($member = $result->fetch_assoc()){ ?>
         <tr>
             <td><?php echo $member['id']; ?></td>
             <td><?php echo $member['name']; ?></td>

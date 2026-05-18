@@ -6,69 +6,9 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-include "../../config/db.php";
+include "../../controllers/LoanController.php";
 
 $today = date("Y-m-d");
-$filter = "";
-
-if(isset($_GET['filter'])){
-    $filter = $_GET['filter'];
-}
-
-if($filter == "overdue"){
-
-    $stmt = $conn->prepare(
-        "SELECT borrow_records.*, books.title
-         FROM borrow_records
-         LEFT JOIN books ON borrow_records.book_id = books.id
-         WHERE borrow_records.status='active'
-         AND borrow_records.due_date < ?
-         ORDER BY borrow_records.due_date ASC"
-    );
-
-    $stmt->bind_param("s", $today);
-
-} elseif($filter == "today"){
-
-    $stmt = $conn->prepare(
-        "SELECT borrow_records.*, books.title
-         FROM borrow_records
-         LEFT JOIN books ON borrow_records.book_id = books.id
-         WHERE borrow_records.status='active'
-         AND borrow_records.due_date = ?
-         ORDER BY borrow_records.due_date ASC"
-    );
-
-    $stmt->bind_param("s", $today);
-
-} elseif($filter == "week"){
-
-    $week_later = date("Y-m-d", strtotime("+7 days"));
-
-    $stmt = $conn->prepare(
-        "SELECT borrow_records.*, books.title
-         FROM borrow_records
-         LEFT JOIN books ON borrow_records.book_id = books.id
-         WHERE borrow_records.status='active'
-         AND borrow_records.due_date BETWEEN ? AND ?
-         ORDER BY borrow_records.due_date ASC"
-    );
-
-    $stmt->bind_param("ss", $today, $week_later);
-
-} else {
-
-    $stmt = $conn->prepare(
-        "SELECT borrow_records.*, books.title
-         FROM borrow_records
-         LEFT JOIN books ON borrow_records.book_id = books.id
-         WHERE borrow_records.status='active'
-         ORDER BY borrow_records.due_date ASC"
-    );
-}
-
-$stmt->execute();
-$result = $stmt->get_result();
 ?>
 
 

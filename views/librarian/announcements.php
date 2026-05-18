@@ -6,36 +6,12 @@ if(!isset($_SESSION['librarian'])){
     exit();
 }
 
-include "../../config/db.php";
-
-$message = "";
-
-if(isset($_POST['post_announcement'])){
-
-    $branch_id = $_POST['branch_id'];
-    $author_id = 1;
-    $title = $_POST['title'];
-    $body = $_POST['body'];
-
-    $stmt = $conn->prepare(
-        "INSERT INTO announcements (branch_id, author_id, title, body)
-         VALUES (?, ?, ?, ?)"
-    );
-
-    $stmt->bind_param("iiss", $branch_id, $author_id, $title, $body);
-
-    if($stmt->execute()){
-        $message = "Announcement posted successfully";
-    } else {
-        $message = "Failed to post announcement";
-    }
-}
-
-$result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
+include "../../controllers/AnnouncementController.php";
 ?>
-<link rel="stylesheet" href="../../assets/css/librarian.css">
-<?php include "navbar.php"; ?>
 
+<link rel="stylesheet" href="../../assets/css/librarian.css">
+
+<?php include "navbar.php"; ?>
 
 <h2>Post Announcement</h2>
 
@@ -43,16 +19,32 @@ $result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
 
 <form method="POST">
 
-    <input type="number" name="branch_id" placeholder="Branch ID" value="1" required>
+    <input type="number"
+           name="branch_id"
+           placeholder="Branch ID"
+           value="1"
+           min="1"
+           required>
+
     <br><br>
 
-    <input type="text" name="title" placeholder="Announcement Title" required>
+    <input type="text"
+           name="title"
+           placeholder="Announcement Title"
+           required>
+
     <br><br>
 
-    <textarea name="body" placeholder="Announcement Body" required></textarea>
+    <textarea name="body"
+              placeholder="Announcement Body"
+              required></textarea>
+
     <br><br>
 
-    <button type="submit" name="post_announcement">Post Announcement</button>
+    <button type="submit"
+            name="post_announcement">
+            Post Announcement
+    </button>
 
 </form>
 
@@ -61,6 +53,7 @@ $result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
 <h2>All Announcements</h2>
 
 <table border="1" cellpadding="10">
+
     <tr>
         <th>ID</th>
         <th>Branch ID</th>
@@ -70,6 +63,7 @@ $result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
     </tr>
 
     <?php while($row = $result->fetch_assoc()){ ?>
+
         <tr>
             <td><?php echo $row['id']; ?></td>
             <td><?php echo $row['branch_id']; ?></td>
@@ -77,7 +71,7 @@ $result = $conn->query("SELECT * FROM announcements ORDER BY id DESC");
             <td><?php echo $row['body']; ?></td>
             <td><?php echo $row['published_at']; ?></td>
         </tr>
-       <?php } ?>
-</table>
 
-<br>
+    <?php } ?>
+
+</table>
