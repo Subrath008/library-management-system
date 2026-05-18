@@ -17,11 +17,23 @@ class Auth {
              AND is_active=1"
         );
 
+        if(!$stmt){
+            die("Prepare Failed: " . $this->conn->error);
+        }
+
         $stmt->bind_param("s", $email);
 
-        $stmt->execute();
+        if(!$stmt->execute()){
+            die("Execute Failed: " . $stmt->error);
+        }
 
-        return $stmt->get_result();
+        $result = $stmt->get_result();
+
+        if(!$result){
+            die("Get Result Failed");
+        }
+
+        return $result;
     }
 }
 

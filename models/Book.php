@@ -31,7 +31,7 @@ class Book {
     }
 
     public function getAllBooks(){
-        $stmt = $this->conn->prepare("SELECT * FROM books ORDER BY id DESC");
+         $stmt = $this->conn->prepare("SELECT * FROM books ORDER BY id DESC");
         $stmt->execute();
         return $stmt->get_result();
     }

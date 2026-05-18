@@ -20,7 +20,7 @@ border-radius:10px;
 
     <div>
 
-        <a href="dashboard.php"
+        <!-- <a href="dashboard.php"
            style="
            background:white;
            color:#0b5ed7;
@@ -31,7 +31,7 @@ border-radius:10px;
            font-weight:bold;
            ">
            Dashboard
-        </a>
+        </a> -->
 
         <a href="../../controllers/AuthController.php?logout=1"
            style="

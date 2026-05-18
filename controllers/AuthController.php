@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+
+include __DIR__ . "/../config/db.php";
 include __DIR__ . "/../models/Auth.php";
 
 $authModel = new Auth($conn);
