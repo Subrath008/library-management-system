@@ -15,6 +15,7 @@ include_once("../../config/db.php");
 include_once("../../models/MemberModel.php");
 
 $member = getMemberById($conn, $_SESSION['member_id']);
+$fulfilled_reservations = getFulfilledReservations($conn, $_SESSION['member_id']);
 
 $announcements = getAnnouncementsForMember(
     $conn,
@@ -26,6 +27,22 @@ $announcements = getAnnouncementsForMember(
 <html>
 <head>
     <title>Member Dashboard</title>
+    <?php while($notice = mysqli_fetch_assoc($fulfilled_reservations)) { ?>
+
+    <div class="announcement" style="border-left:5px solid green;">
+        <h3>Reserved Book Available</h3>
+
+        <p>
+            Your reserved book
+            <strong><?php echo $notice['title']; ?></strong>
+            is now available at
+            <strong><?php echo $notice['branch_name']; ?></strong>.
+        </p>
+    </div>
+
+<?php } ?>
+
+
    
 <link rel="stylesheet" href="../../assets/css/member.css">
 

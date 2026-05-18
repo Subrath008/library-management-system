@@ -481,6 +481,21 @@ function submitAnnouncementResponse($conn, $announcement_id, $member_id, $respon
 
     return mysqli_stmt_execute($stmt);
 }
+function getFulfilledReservations($conn, $member_id) {
+    $sql = "SELECT reservations.*, books.title, branches.name AS branch_name
+            FROM reservations
+            JOIN books ON reservations.book_id = books.id
+            JOIN branches ON reservations.branch_id = branches.id
+            WHERE reservations.member_id = ?
+            AND reservations.status = 'fulfilled'
+            ORDER BY reservations.reserved_at DESC";
+
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $member_id);
+    mysqli_stmt_execute($stmt);
+
+    return mysqli_stmt_get_result($stmt);
+}
 
 
 
